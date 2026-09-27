@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 An de Nous - Pour mon Choub&eacute;b&eacute; &#10084;&#65039;</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .heart-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .heart-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            transform: rotate(45deg);
+            animation: animate 10s linear infinite;
+            bottom: -50px;
+        }
+        .heart-bg span::before, .heart-bg span::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+        }
+        .heart-bg span::before { top: -10px; left: 0; }
+        .heart-bg span::after { left: -10px; top: 0; }
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(45deg); opacity: 0; }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 30px 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(219, 68, 85, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 2px solid #fff;
+        }
+        h1, h2 {
+            color: #d63384;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+        }
+        h1 { font-size: 2.2rem; margin-bottom: 15px; }
+        h2 { font-size: 1.8rem; margin-bottom: 20px; }
+        p { color: #4a4a4a; font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
+        .btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .option-btn {
+            background: #fff0f5;
+            border: 2px solid #ffb6c1;
+            color: #d63384;
+            padding: 14px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .option-btn.correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724 !important; }
+        .option-btn.wrong { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24 !important; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .polaroid {
+            background: white;
+            padding: 8px 8px 20px 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-radius: 6px;
+        }
+        .polaroid img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
+        .letter-box {
+            text-align: left;
+            background: #fffbf0;
+            border: 1px solid #f3e5ab;
+            padding: 20px;
+            border-radius: 15px;
+            max-height: 380px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.8;
+        }
+        .hidden { display: none; }
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg">
+        <span style="left: 10%; animation-duration: 8s;"></span>
+        <span style="left: 20%; animation-duration: 12s;"></span>
+        <span style="left: 50%; animation-duration: 7s;"></span>
+        <span style="left: 80%; animation-duration: 9s;"></span>
+    </div>
+
+    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">&#127925;</button>
+
+    <!-- ACCUEIL -->
+    <div class="card" id="step-welcome">
+        <h1>Coucou mon Choub&eacute;b&eacute; &#10084;&#65039;</h1>
+        <p>J'ai pr&eacute;par&eacute; quelque chose de sp&eacute;cial pour toi, mon Choub&eacute;b&eacute; &#10084;&#65039;. Mais avant de d&eacute;couvrir ton cadeau, tu dois r&eacute;ussir quelques petits d&eacute;fis.</p>
+        <button class="btn" onclick="nextStep('step-quiz-1')">Commencer le jeu &#128640;</button>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="card hidden" id="step-quiz-1">
+        <h2>Question 1/4 &#128098;</h2>
+        <p><strong>Quelle date repr&eacute;sente notre anniversaire ?</strong></p>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-1')">14 f&eacute;vrier</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'step-quiz-1', 'step-quiz-2')">1er octobre</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-1')">17 mars</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-1')">25 d&eacute;cembre</button>
+        </div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="card hidden" id="step-quiz-2">
+        <h2>Question 2/4 &#128011;</h2>
+        <p><strong>Quand on a fait pour la premi&egrave;re fois ?</strong></p>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-2')">1er octobre</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-2')">1er janvier</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'step-quiz-2', 'step-quiz-3')">17 mars</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-2')">30 juin</button>
+        </div>
+    </div>
+
+    <!-- QUIZ 3 -->
+    <div class="card hidden" id="step-quiz-3">
+        <h2>Question 3/4 &#128584;</h2>
+        <p><strong>Quel souvenir un peu mouvement&eacute; fait partie de notre histoire ?</strong></p>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-3')">Les graillis</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'step-quiz-3', 'step-quiz-4')">La dispute avec mon papa</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-3')">Le jour o&ugrave; on a failli faire &agrave; Piaget</button>
+        </div>
+    </div>
+
+    <!-- QUIZ 4 -->
+    <div class="card hidden" id="step-quiz-4">
+        <h2>Question 4/4 &#128205;</h2>
+        <p><strong>O&ugrave; a eu lieu notre 1er rendez-vous ?</strong></p>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-4')">KFC</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-4')">Allocodrome</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'step-quiz-4', 'step-congrats')">Chez toi</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'step-quiz-4')">Piaget</button>
+        </div>
+    </div>
+
+    <!-- BRAVO -->
+    <div class="card hidden" id="step-congrats">
+        <h1>Bravo mon Choub&eacute;b&eacute; &#10084;&#65039;</h1>
+        <p>Tu as r&eacute;ussi ! Maintenant, d&eacute;couvre ton cadeau &#127873;&#10024;</p>
+        <button class="btn" onclick="nextStep('step-gallery')">D&eacute;couvrir mon cadeau &#10084;&#65039;</button>
+    </div>
+
+    <!-- GALERIE -->
+    <div class="card hidden" id="step-gallery">
+        <h2>Nos Souvenirs Ensemble &#128248;</h2>
+        <div class="gallery-grid" id="galleryGrid"></div>
+        <input type="file" id="imageInput" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
+        <button class="btn" onclick="document.getElementById('imageInput').click()">+ Ajouter nos photos</button>
+        <br>
+        <button class="btn" onclick="nextStep('step-letter')" style="margin-top: 15px;">Lire mon message &#10084;&#65039;</button>
+    </div>
+
+    <!-- LETTRE D'AMOUR -->
+    <div class="card hidden" id="step-letter">
+        <h1>1 AN DE NOUS &#10084;&#65039;</h1>
+        <div class="letter-box">
+            <p>Mon amour, mon Ange Emmanuel, mon Choub&eacute;b&eacute; &#10084;&#65039;,</p>
+            <p>Aujourd&rsquo;hui, &ccedil;a fait 1 an que nous sommes ensemble. Un an d&eacute;j&agrave;. Un an rempli de rires, de beaux moments, de petites disputes, de r&eacute;conciliations, de souvenirs et surtout de beaucoup d&rsquo;amour.</p>
+            <p>Je sais que notre histoire n&rsquo;est pas parfaite et qu&rsquo;on a parfois travers&eacute; des moments difficiles, mais malgr&eacute; tout, on est encore l&agrave;. Et rien que pour &ccedil;a, je suis reconnaissante.</p>
+            <p>Merci pour tous les sourires que tu m&rsquo;as donn&eacute;s, pour nos d&eacute;lires, nos discussions, nos moments de complicit&eacute; et m&ecirc;me pour toutes nos petites disputes. Chaque moment avec toi fait maintenant partie de mon histoire.</p>
+            <p>Tu occupes une place vraiment sp&eacute;ciale dans mon c&#339;ur et je souhaite de tout c&#339;ur qu&rsquo;on puisse continuer &agrave; grandir ensemble, &agrave; cr&eacute;er de beaux souvenirs et &agrave; vivre encore beaucoup de choses &agrave; deux.</p>
+            <p>Joyeux 1 an &agrave; nous, mon Choub&eacute;b&eacute;.</p>
+            <p>Je t&rsquo;aime &eacute;norm&eacute;ment, et j&rsquo;esp&egrave;re que ce n&rsquo;est que le d&eacute;but d&rsquo;une tr&egrave;s longue histoire.</p>
+            <p style="text-align: center; font-weight: bold; color: #d63384; margin-top: 15px;">1 an de nous et encore plein d&rsquo;ann&eacute;es &agrave; &eacute;crire ensemble. &#128149;</p>
+        </div>
+    </div>
+
+    <script>
+        function nextStep(stepId) {
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            document.getElementById(stepId).classList.remove('hidden');
+            if (stepId === 'step-congrats') {
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            }
+        }
+
+        function checkAnswer(btn, isCorrect, currentStepId, nextStepId) {
+            if (isCorrect) {
+                btn.classList.add('correct');
+                setTimeout(() => nextStep(nextStepId), 600);
+            } else {
+                btn.classList.add('wrong');
+                setTimeout(() => btn.classList.remove('wrong'), 700);
+            }
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const gallery = document.getElementById('galleryGrid');
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const polaroid = document.createElement('div');
+                    polaroid.className = 'polaroid';
+                    polaroid.innerHTML = `<img src="${e.target.result}" alt="Photo">`;
+                    gallery.appendChild(polaroid);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        let audioCtx;
+        let isPlaying = false;
+        function toggleMusic() {
+            if (!isPlaying) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                isPlaying = true;
+                document.getElementById('musicBtn').innerText = '💖';
+            } else {
+                isPlaying = false;
+                document.getElementById('musicBtn').innerText = '🎵';
+            }
+        }
+    </script>
+</body>
+</html>
